@@ -1,5 +1,6 @@
 // Dependencies
 var express = require("express");
+var exphbs = require("express-handlebars");
 var mongojs = require("mongojs");
 // Require axios and cheerio. This makes the scraping possible
 var axios = require("axios");
@@ -7,10 +8,18 @@ var cheerio = require("cheerio");
 
 // Initialize Express
 var app = express();
+var mongoose = require("mongoose")
 
 // Database configuration
 var databaseUrl = "steamdb";
 var collections = ["steamData"];
+
+// setting up static folder for public html and css
+app.use(express.static("public"));
+
+// setting up handlebars main view
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
 // Hook mongojs configuration to the db variable
 var db = mongojs(databaseUrl, collections);
@@ -20,7 +29,7 @@ db.on("error", function (error) {
 
 // root route
 app.get("/", function (req, res) {
-    res.send("welcome to steam scraper")
+    res.render("index")
 })
 
 // new free games
@@ -30,35 +39,37 @@ app.get("/new", function (req, res) {
 
         var newResults = [];
 
-        $("div#tab_content_NewReleases").each(function (i, element) {
-            // var title = $(element).find("div.tab_item_name").text();
-            // console.log(element)
-            var link = $(element).find("div#NewReleasesRows").children().attr("href")
-            // var photo = $(element).find("img.tab_item_cap_img").attr("src");
-            // insert into DB
+        $("div#NewReleasesRows").children("a.tab_item").each(function (i, element) {
+
+            var title = $(element).find("div.tab_item_name").text();
+            var link = $(element).attr("href");
+            var photo = $(element).find("img.tab_item_cap_img").attr("src");
+            var tags = $(element).find("span.top_tag").text();
+            // insert into test array
             newResults.push({
-                // title: title,
+                title: title,
                 link: link,
-                // photo: photo
+                photo: photo,
+                tags: tags
             })
         });
         res.json(newResults)
-        console.log(newResults)
     })
 })
 
 // tpo free games
 app.get("/top", function (req, res) {
-    axios.get("https://store.steampowered.com/genre/Free%20to%20Play/#p=0&tab=TopSellers").then(function (response) {
+    axios.get("https://store.steampowered.com/genre/Free%20to%20Play/").then(function (response) {
         var $ = cheerio.load(response.data);
 
         var topResults = [];
 
-        $("a.tab_item").each(function (i, element) {
+        $("div#TopSellersRows").children("a.tab_item").each(function (i, element) {
+
             var title = $(element).find("div.tab_item_name").text();
             var link = $(element).attr("href");
             var photo = $(element).find("img.tab_item_cap_img").attr("src");
-            // insert into DB
+            // insert into test array
             topResults.push({
                 title: title,
                 link: link,
@@ -66,22 +77,22 @@ app.get("/top", function (req, res) {
             })
         });
         res.json(topResults)
-        // console.log(results)
     })
 })
 
 // current free games
 app.get("/current", function (req, res) {
-    axios.get("https://store.steampowered.com/genre/Free%20to%20Play/#p=0&tab=ConcurrentUsers").then(function (response) {
+    axios.get("https://store.steampowered.com/genre/Free%20to%20Play/").then(function (response) {
         var $ = cheerio.load(response.data);
 
         var currentResults = [];
 
-        $("a.tab_item").each(function (i, element) {
+        $("div#ConcurrentUsersRows").children("a.tab_item").each(function (i, element) {
+
             var title = $(element).find("div.tab_item_name").text();
             var link = $(element).attr("href");
             var photo = $(element).find("img.tab_item_cap_img").attr("src");
-            // insert into DB
+            // insert into test array
             currentResults.push({
                 title: title,
                 link: link,
@@ -95,16 +106,17 @@ app.get("/current", function (req, res) {
 
 // upcoming
 app.get("/upcoming", function (req, res) {
-    axios.get("https://store.steampowered.com/genre/Free%20to%20Play/#p=0&tab=ComingSoon").then(function (response) {
+    axios.get("https://store.steampowered.com/genre/Free%20to%20Play/").then(function (response) {
         var $ = cheerio.load(response.data);
 
         var upcomingResults = [];
 
-        $("a.tab_item").each(function (i, element) {
+        $("div#ComingSoonRows").children("a.tab_item").each(function (i, element) {
+
             var title = $(element).find("div.tab_item_name").text();
             var link = $(element).attr("href");
             var photo = $(element).find("img.tab_item_cap_img").attr("src");
-            // insert into DB
+            // insert into test array
             upcomingResults.push({
                 title: title,
                 link: link,
