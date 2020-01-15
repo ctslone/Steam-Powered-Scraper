@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 var GameSchema = new Schema({
     title: {
         type: String,
-        required: true
+        required: true,
     },
     link: {
         type: String,
@@ -18,15 +18,18 @@ var GameSchema = new Schema({
     },
     tags: {
         type: String,
-        required: true
     },
     type: {
         type: String,
-        requiired: true
+        required: true
     },
     comment: {
         type: Schema.Types.ObjectId,
         ref: "Comment"
+    },
+    saved: {
+        type: Boolean,
+        required: true
     }
 
 });

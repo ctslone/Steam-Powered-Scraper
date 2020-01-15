@@ -31,7 +31,7 @@ app.set("view engine", "handlebars");
 
 // connect to mongoDB using mongoose
 // db name is steamdb
-mongoose.connect("mongodb://localhost/steamdb", { useNewUrlParser: true })
+mongoose.connect("mongodb://localhost/steamdb", { useNewUrlParser: true, useUnifiedTopology: true })
 
 // root route
 app.get("/", function (req, res) {
@@ -54,7 +54,8 @@ app.get("/scrape", function (req, res) {
             newGames.link = $(element).attr("href");
             newGames.photo = $(element).find("img.tab_item_cap_img").attr("src");
             newGames.tags = $(element).find("span.top_tag").text();
-            newGames.type = "new"
+            newGames.type = "new";
+            newGames.saved = false
             // insert into games array
             // newGames.push({
             //     title: title,
@@ -77,7 +78,8 @@ app.get("/scrape", function (req, res) {
             topGames.link = $(element).attr("href");
             topGames.photo = $(element).find("img.tab_item_cap_img").attr("src");
             topGames.tags = $(element).find("span.top_tag").text();
-            topGames.type = "top"
+            topGames.type = "top";
+            topGames.saved = false
             // insert into test array
             // topGames.push({
             //     title: title,
@@ -101,6 +103,7 @@ app.get("/scrape", function (req, res) {
             currentGames.photo = $(element).find("img.tab_item_cap_img").attr("src");
             currentGames.tags = $(element).find("span.top_tag").text();
             currentGames.type = "current";
+            currentGames.saved = false
             // insert into test array
             // currentGames.push({
             //     title: title,
@@ -123,7 +126,8 @@ app.get("/scrape", function (req, res) {
             upcomingGames.link = $(element).attr("href");
             upcomingGames.photo = $(element).find("img.tab_item_cap_img").attr("src");
             upcomingGames.tags = $(element).find("span.top_tag").text();
-            upcomingGames.type = "upcoming"
+            upcomingGames.type = "upcoming";
+            upcomingGames.saved = false
             // insert into test array
             // upcomingGames.push({
             //     title: title,
@@ -140,10 +144,40 @@ app.get("/scrape", function (req, res) {
             });
         });
 
-        res.send("scraped")
+        res.render("scraped")
 
     });    
 })
+
+app.get("/top", function(req, res) {
+    db.Games.find({type: "top"}).then(function(showAllTop) {
+        res.json(showAllTop)
+      })
+});
+
+app.get("/new", function(req, res) {
+    db.Games.find({type: "new"}).then(function(showAllNew) {
+        res.json(showAllNew)
+      })
+});
+
+app.get("/current", function(req, res) {
+    db.Games.find({type: "current"}).then(function(showAllCurrent) {
+        res.json(showAllCurrent)
+      })
+});
+
+app.get("/upcoming", function(req, res) {
+    db.Games.find({type: "upcoming"}).then(function(showAllUpcoming) {
+        res.json(showAllUpcoming)
+      })
+});
+
+app.get("/clear", function(req, res) {
+    db.Games.deleteMany({}).then(function(s) {
+        res.send("deleted all articles")
+      })
+});
 
 // Listen on port 3000
 app.listen(PORT, function () {
