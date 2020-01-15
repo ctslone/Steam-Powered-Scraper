@@ -33,100 +33,81 @@ app.get("/", function (req, res) {
 })
 
 // new free games
-app.get("/new", function (req, res) {
+app.get("/scrape", function (req, res) {
     axios.get("https://store.steampowered.com/genre/Free%20to%20Play/").then(function (response) {
         var $ = cheerio.load(response.data);
 
-        var newResults = [];
-
+        var games = [];
+        // grabbing all new games
         $("div#NewReleasesRows").children("a.tab_item").each(function (i, element) {
 
             var title = $(element).find("div.tab_item_name").text();
             var link = $(element).attr("href");
             var photo = $(element).find("img.tab_item_cap_img").attr("src");
             var tags = $(element).find("span.top_tag").text();
-            // insert into test array
-            newResults.push({
+            // insert into games array
+            games.push({
                 title: title,
                 link: link,
                 photo: photo,
-                tags: tags
+                tags: tags,
+                type: "new"
             })
         });
-        res.json(newResults)
-    })
-})
-
-// tpo free games
-app.get("/top", function (req, res) {
-    axios.get("https://store.steampowered.com/genre/Free%20to%20Play/").then(function (response) {
-        var $ = cheerio.load(response.data);
-
-        var topResults = [];
 
         $("div#TopSellersRows").children("a.tab_item").each(function (i, element) {
 
             var title = $(element).find("div.tab_item_name").text();
             var link = $(element).attr("href");
             var photo = $(element).find("img.tab_item_cap_img").attr("src");
+            var tags = $(element).find("span.top_tag").text();
             // insert into test array
-            topResults.push({
+            games.push({
                 title: title,
                 link: link,
-                photo: photo
+                photo: photo,
+                tags: tags,
+                type: "top"
             })
         });
-        res.json(topResults)
-    })
-})
-
-// current free games
-app.get("/current", function (req, res) {
-    axios.get("https://store.steampowered.com/genre/Free%20to%20Play/").then(function (response) {
-        var $ = cheerio.load(response.data);
-
-        var currentResults = [];
-
+        
         $("div#ConcurrentUsersRows").children("a.tab_item").each(function (i, element) {
 
             var title = $(element).find("div.tab_item_name").text();
             var link = $(element).attr("href");
             var photo = $(element).find("img.tab_item_cap_img").attr("src");
+            var tags = $(element).find("span.top_tag").text();
             // insert into test array
             currentResults.push({
                 title: title,
                 link: link,
-                photo: photo
+                photo: photo,
+                tags: tags,
+                type: "current"
             })
         });
-        res.json(currentResults)
-        // console.log(results)
-    })
-})
-
-// upcoming
-app.get("/upcoming", function (req, res) {
-    axios.get("https://store.steampowered.com/genre/Free%20to%20Play/").then(function (response) {
-        var $ = cheerio.load(response.data);
-
-        var upcomingResults = [];
 
         $("div#ComingSoonRows").children("a.tab_item").each(function (i, element) {
 
             var title = $(element).find("div.tab_item_name").text();
             var link = $(element).attr("href");
             var photo = $(element).find("img.tab_item_cap_img").attr("src");
+            var tags = $(element).find("span.top_tag").text();
             // insert into test array
             upcomingResults.push({
                 title: title,
                 link: link,
-                photo: photo
+                photo: photo,
+                tags: tags,
+                type: "upcoming"
             })
         });
-        res.json(upcomingResults)
-        // console.log(results)
-    })
+
+        res.json(games)
+
+    });    
 })
+
 // Listen on port 3000
 app.listen(3000, function () {
     console.log("App running on port 3000!");
