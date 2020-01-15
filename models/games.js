@@ -1,7 +1,9 @@
+// requiring mongoose
 var mongoose = require("mongoose");
+// 
 var Schema = mongoose.Schema;
 
-var newGameSchema = new.mongoose.Schema({
+var GameSchema = new Schema({
     title: {
         type: String,
         required: true
@@ -10,54 +12,28 @@ var newGameSchema = new.mongoose.Schema({
         type: String,
         required: true
     },
+    photo: {
+        type: String,
+        required: true
+    },
     tags: {
         type: String,
         required: true
+    },
+    type: {
+        type: String,
+        requiired: true
+    },
+    comment: {
+        type: Schema.Types.ObjectId,
+        ref: "Comment"
     }
+
 });
 
-var topGameSchema = new.mongoose.Schema({
-    title: {
-        type: String,
-        required: true
-    },
-    link: {
-        type: String,
-        required: true
-    },
-    tags: {
-        type: String,
-        required: true
-    }
-});
+var Game = mongoose.model("Game", GameSchema);
 
-var currentGameSchema = new.mongoose.Schema({
-    title: {
-        type: String,
-        required: true
-    },
-    link: {
-        type: String,
-        required: true
-    },
-    tags: {
-        type: String,
-        required: true
-    }
-});
+module.exports = Game;
 
-var upcomingGameSchema = new.mongoose.Schema({
-    title: {
-        type: String,
-        required: true
-    },
-    link: {
-        type: String,
-        required: true
-    },
-    tags: {
-        type: String,
-        required: true
-    }
-});
+
 

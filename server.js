@@ -2,30 +2,36 @@
 var express = require("express");
 var exphbs = require("express-handlebars");
 var mongojs = require("mongojs");
+var mongoose = require("mongoose");
 // Require axios and cheerio. This makes the scraping possible
 var axios = require("axios");
 var cheerio = require("cheerio");
 
 // Initialize Express
 var app = express();
-var mongoose = require("mongoose")
+
+// models
+var db = require("./models")
 
 // Database configuration
-var databaseUrl = "steamdb";
-var collections = ["steamData"];
+// var databaseUrl = "steamdb";
+// var collections = ["steamData"];
 
-// setting up static folder for public html and css
+// server
+var PORT = 3000;
+
+// setting up static folder for public html and css AND parsing req body as JSON
 app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // setting up handlebars main view
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-// Hook mongojs configuration to the db variable
-var db = mongojs(databaseUrl, collections);
-db.on("error", function (error) {
-    console.log("Database Error:", error);
-});
+// connect to mongoDB using mongoose
+// db name is steamdb
+mongoose.connect("mongodb://localhost/steamdb", { useNewUrlParser: true })
 
 // root route
 app.get("/", function (req, res) {
@@ -37,78 +43,109 @@ app.get("/scrape", function (req, res) {
     axios.get("https://store.steampowered.com/genre/Free%20to%20Play/").then(function (response) {
         var $ = cheerio.load(response.data);
 
-        var games = [];
+        var newGames = {};
+        var topGames = {};
+        var currentGames = {};
+        var upcomingGames = {};
         // grabbing all new games
         $("div#NewReleasesRows").children("a.tab_item").each(function (i, element) {
 
-            var title = $(element).find("div.tab_item_name").text();
-            var link = $(element).attr("href");
-            var photo = $(element).find("img.tab_item_cap_img").attr("src");
-            var tags = $(element).find("span.top_tag").text();
+            newGames.title = $(element).find("div.tab_item_name").text();
+            newGames.link = $(element).attr("href");
+            newGames.photo = $(element).find("img.tab_item_cap_img").attr("src");
+            newGames.tags = $(element).find("span.top_tag").text();
+            newGames.type = "new"
             // insert into games array
-            games.push({
-                title: title,
-                link: link,
-                photo: photo,
-                tags: tags,
-                type: "new"
+            // newGames.push({
+            //     title: title,
+            //     link: link,
+            //     photo: photo,
+            //     tags: tags,
+            //     type: "new"
+            // });
+            // create a new entry into the db
+            db.Games.create(newGames).then(function(addNewGames) {
+                // console.log(addNewGames)
+            }).catch(function(err) {
+                console.log(err)
             })
         });
 
         $("div#TopSellersRows").children("a.tab_item").each(function (i, element) {
 
-            var title = $(element).find("div.tab_item_name").text();
-            var link = $(element).attr("href");
-            var photo = $(element).find("img.tab_item_cap_img").attr("src");
-            var tags = $(element).find("span.top_tag").text();
+            topGames.title = $(element).find("div.tab_item_name").text();
+            topGames.link = $(element).attr("href");
+            topGames.photo = $(element).find("img.tab_item_cap_img").attr("src");
+            topGames.tags = $(element).find("span.top_tag").text();
+            topGames.type = "top"
             // insert into test array
-            games.push({
-                title: title,
-                link: link,
-                photo: photo,
-                tags: tags,
-                type: "top"
+            // topGames.push({
+            //     title: title,
+            //     link: link,
+            //     photo: photo,
+            //     tags: tags,
+            //     type: "top"
+            // });
+
+            db.Games.create(topGames).then(function(addTopGames) {
+                // console.log(addTopGames)
+            }).catch(function(err) {
+                console.log(err)
             })
         });
         
         $("div#ConcurrentUsersRows").children("a.tab_item").each(function (i, element) {
 
-            var title = $(element).find("div.tab_item_name").text();
-            var link = $(element).attr("href");
-            var photo = $(element).find("img.tab_item_cap_img").attr("src");
-            var tags = $(element).find("span.top_tag").text();
+            currentGames.title = $(element).find("div.tab_item_name").text();
+            currentGames.link = $(element).attr("href");
+            currentGames.photo = $(element).find("img.tab_item_cap_img").attr("src");
+            currentGames.tags = $(element).find("span.top_tag").text();
+            currentGames.type = "current";
             // insert into test array
-            currentResults.push({
-                title: title,
-                link: link,
-                photo: photo,
-                tags: tags,
-                type: "current"
+            // currentGames.push({
+            //     title: title,
+            //     link: link,
+            //     photo: photo,
+            //     tags: tags,
+            //     type: "current"
+            // });
+
+            db.Games.create(currentGames).then(function(addCurrentGames) {
+                // console.log(addCurrentGames)
+            }).catch(function(err) {
+                console.log(err)
             })
         });
 
         $("div#ComingSoonRows").children("a.tab_item").each(function (i, element) {
 
-            var title = $(element).find("div.tab_item_name").text();
-            var link = $(element).attr("href");
-            var photo = $(element).find("img.tab_item_cap_img").attr("src");
-            var tags = $(element).find("span.top_tag").text();
+            upcomingGames.title = $(element).find("div.tab_item_name").text();
+            upcomingGames.link = $(element).attr("href");
+            upcomingGames.photo = $(element).find("img.tab_item_cap_img").attr("src");
+            upcomingGames.tags = $(element).find("span.top_tag").text();
+            upcomingGames.type = "upcoming"
             // insert into test array
-            upcomingResults.push({
-                title: title,
-                link: link,
-                photo: photo,
-                tags: tags,
-                type: "upcoming"
-            })
+            // upcomingGames.push({
+            //     title: title,
+            //     link: link,
+            //     photo: photo,
+            //     tags: tags,
+            //     type: "upcoming"
+            // });
+
+            db.Games.create(upcomingGames).then(function(addUpcomingGames) {
+                // console.log(addUpcomingGames)
+            }).catch(function(err) {
+                console.log(err)
+            });
         });
 
-        res.json(games)
+        res.send("scraped")
 
     });    
 })
 
 // Listen on port 3000
-app.listen(3000, function () {
+app.listen(PORT, function () {
     console.log("App running on port 3000!");
 });
