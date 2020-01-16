@@ -179,6 +179,25 @@ app.get("/clear", function(req, res) {
       })
 });
 
+// show all saved
+app.get("/saved", function(req, res) {
+    db.Games.find({saved: true}).then(function(showAllSaved) {
+        res.render("index", {Games: showAllSaved})
+      })
+});
+// updating saved value to true
+app.put("/save/:id", function(req, res) {
+    db.Games.updateMany({_id: req.params.id}, {$set: {saved: true}}, {multi: true}).then(function(){
+        res.render("index")
+    })
+});
+// removing saved value of true
+app.put("/unsave/:id", function(req, res) {
+    db.Games.updateMany({_id: req.params.id}, {$set: {saved: false}}, {multi: true}).then(function(){
+        res.render("index")
+    })
+});
+
 // Listen on port 3000
 app.listen(PORT, function () {
     console.log("App running on port 3000!");

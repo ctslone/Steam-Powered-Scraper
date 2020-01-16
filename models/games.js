@@ -34,8 +34,9 @@ var GameSchema = new Schema({
 
 });
 
-// GameSchema.methods.getNewGames = function() {
-//     return 
+// GameSchema.methods.updateSaved = function() {
+//     this.saved = true;
+//     return this.saved;
 // }
 
 var Game = mongoose.model("Game", GameSchema);
