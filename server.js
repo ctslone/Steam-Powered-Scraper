@@ -151,26 +151,25 @@ app.get("/scrape", function (req, res) {
 
 app.get("/top", function(req, res) {
     db.Games.find({type: "top"}).then(function(showAllTop) {
-        res.json(showAllTop)
+        res.render("index", {Games: showAllTop})
       })
 });
 
 app.get("/new", function(req, res) {
     db.Games.find({type: "new"}).then(function(showAllNew) {
-        console.log(showAllNew)
-        res.render("index", {newGames: showAllNew})
+        res.render("index", {Games: showAllNew})
       })
 });
 
 app.get("/current", function(req, res) {
     db.Games.find({type: "current"}).then(function(showAllCurrent) {
-        res.json(showAllCurrent)
+        res.render("index", {Games: showAllCurrent})
       })
 });
 
 app.get("/upcoming", function(req, res) {
     db.Games.find({type: "upcoming"}).then(function(showAllUpcoming) {
-        res.json(showAllUpcoming)
+        res.render("index", {Games: showAllUpcoming})
       })
 });
 
