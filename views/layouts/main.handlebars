@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.0.0/materia/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Cormorant+SC" rel="stylesheet">
 	<script src="https://code.jquery.com/jquery.js"></script>
+  <script src="main.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -28,16 +29,19 @@
         <a class="nav-link" href="/saved">Saved Steams</a>
       </li>
       <li class="nav-item">
-        <a class="btn btn-danger scrape-articles mr-2" href="/scrape">Scrape New</a>
+        <a class="btn btn-danger scrape-articles mr-2" href="/scrape">Scrape All Free Games</a>
       </li>
       <li class="nav-item">
-        <a class="btn btn-danger scrape-articles mr-2" href="/top">View Top</a>
+        <a class="btn btn-danger mr-2" id="show-new" href="/new">View New</a>
       </li>
       <li class="nav-item">
-        <a class="btn btn-danger scrape-articles mr-2" href="/current">View Current</a>
+        <a class="btn btn-danger mr-2" href="/top">View Top</a>
       </li>
       <li class="nav-item">
-        <a class="btn btn-danger scrape-articles mr-2" href="/upcoming">View Upcoming</a>
+        <a class="btn btn-danger mr-2" href="/current">View Current</a>
+      </li>
+      <li class="nav-item">
+        <a class="btn btn-danger mr-2" href="/upcoming">View Upcoming</a>
       </li>
       <li class="nav-item">
         <a class="btn btn-danger clear" href="/clear">CLEAR ARTICLES!</a>

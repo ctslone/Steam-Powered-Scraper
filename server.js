@@ -144,7 +144,7 @@ app.get("/scrape", function (req, res) {
             });
         });
 
-        res.render("scraped")
+        res.send("scraped")
 
     });    
 })
@@ -157,7 +157,8 @@ app.get("/top", function(req, res) {
 
 app.get("/new", function(req, res) {
     db.Games.find({type: "new"}).then(function(showAllNew) {
-        res.json(showAllNew)
+        console.log(showAllNew)
+        res.render("index", {newGames: showAllNew})
       })
 });
 
