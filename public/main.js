@@ -42,5 +42,9 @@ $(document).ready(function() {
             console.log("ajax remove save")
         })
     }
+
+    $(".comment").on("click", function() {
+        console.log("comment btn")
+    })
 })
 

@@ -24,8 +24,7 @@ var GameSchema = new Schema({
         required: true
     },
     comment: {
-        type: Schema.Types.ObjectId,
-        ref: "Comment"
+        type: String,
     },
     saved: {
         type: Boolean,
