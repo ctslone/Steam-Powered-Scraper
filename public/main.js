@@ -50,18 +50,20 @@ $(document).ready(function() {
         console.log(savedID)
     })
 
-    $(".saved-btn").on("click", function() {
+    $(".save-btn").on("click", function() {
         // use the savedID global variable to make an ajax call to post a comment to the game with the id of the savedID
-        var comment = {
-            comment: ()
+        console.log("saved btn log for ID" + savedID)
+        var note = {
+            note: $("#commentInput").val()
         };
 
         $.ajax({
             method: "POST",
             url: "/addComment/" + savedID,
-            data: comment,
+            data: note,
         }).then(function(data) {
-            console.log("comment added to DB")
+            // console.log(data)
+            console.log("note added to DB")
         })
     })
 })

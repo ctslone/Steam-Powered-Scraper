@@ -23,7 +23,7 @@ var GameSchema = new Schema({
         type: String,
         required: true
     },
-    comment: {
+    note: {
         type: String,
     },
     saved: {

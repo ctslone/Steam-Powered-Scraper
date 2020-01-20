@@ -55,7 +55,8 @@ app.get("/scrape", function (req, res) {
             newGames.photo = $(element).find("img.tab_item_cap_img").attr("src");
             newGames.tags = $(element).find("span.top_tag").text();
             newGames.type = "new";
-            newGames.saved = false
+            newGames.saved = false;
+            newGames.note = ""
             // insert into games array
             // newGames.push({
             //     title: title,
@@ -79,7 +80,8 @@ app.get("/scrape", function (req, res) {
             topGames.photo = $(element).find("img.tab_item_cap_img").attr("src");
             topGames.tags = $(element).find("span.top_tag").text();
             topGames.type = "top";
-            topGames.saved = false
+            topGames.saved = false;
+            topGames.note = ""
             // insert into test array
             // topGames.push({
             //     title: title,
@@ -103,7 +105,8 @@ app.get("/scrape", function (req, res) {
             currentGames.photo = $(element).find("img.tab_item_cap_img").attr("src");
             currentGames.tags = $(element).find("span.top_tag").text();
             currentGames.type = "current";
-            currentGames.saved = false
+            currentGames.saved = false;
+            currentGames.note = ""
             // insert into test array
             // currentGames.push({
             //     title: title,
@@ -127,7 +130,8 @@ app.get("/scrape", function (req, res) {
             upcomingGames.photo = $(element).find("img.tab_item_cap_img").attr("src");
             upcomingGames.tags = $(element).find("span.top_tag").text();
             upcomingGames.type = "upcoming";
-            upcomingGames.saved = false
+            upcomingGames.saved = false;
+            upcomingGames.note = ""
             // insert into test array
             // upcomingGames.push({
             //     title: title,
@@ -198,6 +202,14 @@ app.put("/unsave/:id", function(req, res) {
         res.render("index")
     })
 });
+// add comment route
+app.post("/addComment/:id", function(req, res) {
+    // console.log("Req ID: " + req.params.id);
+    // console.log("body " + req.body.note);
+    db.Games.updateOne({_id: req.params.id}, {$set: {note: req.body.note}}).then(function(){
+        res.render("saved")
+    })
+})
 
 // Listen on port 3000
 app.listen(PORT, function () {
