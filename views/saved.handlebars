@@ -11,7 +11,7 @@
                     <input data-_id="{{this._id}}" class="form-check-input" type="checkbox" value="" id="savedCheck"
                         checked="checked">
                     <label class="form-check-label" for="savedCheck">Saved</label>
-                    <button class="btn-sm btn-success comment float-right" data-toggle="modal" data-target="#commentModal">Comment</button>
+                    <button data-_id="{{this._id}}" class="btn-sm btn-success comment float-right" data-toggle="modal" data-target="#commentModal">Comment</button>
                     {{!-- <button type="button" data-toggle="modal" data-target="#commentModal">Launch modal</button> --}}
                 </div>
             </div>
@@ -25,17 +25,18 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Comments</h5>
+                <h5 class="modal-title" data-savedID="{{Games}}"id="exampleModalCenterTitle">Comments</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
+                <p>{{Games}}</p>
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-primary save-btn">Submit</button>
             </div>
         </div>
     </div>

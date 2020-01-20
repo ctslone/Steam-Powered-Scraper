@@ -183,6 +183,7 @@ app.get("/clear", function(req, res) {
 app.get("/saved", function(req, res) {
     db.Games.find({saved: true}).then(function(showAllSaved) {
         res.render("saved", {Games: showAllSaved})
+        // console.log(showAllSaved)
       })
 });
 // updating saved value to true
