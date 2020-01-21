@@ -1,0 +1,65 @@
+body {
+    background-image: url(./dark_wood.png);
+    background-position: center;
+    /* background-repeat: no-repeat; */
+    /* background-size: cover; */
+}
+
+.home {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 16px;
+}
+
+.nav-buttons , .noDataButton , .delete-comment-btn , .comment , .view-note-btn {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 8px;
+    word-spacing: -5px;
+}
+
+/* .main-nav {
+    background-color: rgba(0, 128, 0, 0.356) !important;
+} */
+
+.jumbo-image {
+    background-image: url(./keyboard.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 60vh;
+    justify-content: center;
+}
+
+.caption {
+    font-family: 'Press Start 2P', cursive;
+    color: lightblue;
+    text-shadow:
+    0 0 5px #fff,
+    0 0 10px red,
+    0 0 20px red,
+    0 0 40px red;
+}
+
+.game-link:hover {
+    color: lightblue;
+    text-decoration: none;
+    text-shadow:
+    0 0 5px #fff,
+    0 0 10px red,
+    0 0 20px red,
+    0 0 40px red;
+    
+}
+
+input[type="checkbox"]:checked:after {
+    background-color: red;
+    border-color: red;
+}
+
+input[type="checkbox"]:focus:after {
+    border-color: red;
+}
+
+/* .credit {
+    position: absolute;
+    bottom: -10;
+} */

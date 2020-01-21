@@ -1,37 +1,37 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         {{#unless Games}}
-        <div class="jumbotron noSavedAlert">
+        <div class="jumbotron noSavedAlert text-white bg-dark">
             <h1 class="display-4">Uh, oh!</h1>
             <p class="lead">There seems to be a bit of a problem...You haven't saved any games yet!</p>
             <hr class="my-4">
             <p>Please browse all of the games, save what you like and check back later.</p>
-            <a class="btn btn-primary btn-lg" href="/top" role="button">Back</a>
+            <a class="btn btn-danger btn-lg noDataButton" href="/top" role="button">Back</a>
         </div>
         {{/unless}}
         {{#each Games}}
-        <div data-_id="{{this._id}}" class="card col-lg-3 col-md-4 col-sm-12 ml-2 mb-2 mt-2">
+        <div data-_id="{{this._id}}" class="card text-white bg-dark col-lg-3 col-md-4 col-sm-12 ml-2 mb-2 mt-2">
             <img src="{{this.photo}}" class="card-img-top" alt="...">
             <div class="card-body">
-                <h5 class="card-title"><a href="{{this.link}}">{{this.title}}</a></h5>
+                <h5 class="card-title"><a class="game-link" href="{{this.link}}">{{this.title}}</a></h5>
                 <p class="card-text">{{this.tags}}</p>
                 {{!-- <a data-_id="{{this._id}}" class="btn btn-primary save">Save!</a> --}}
                 <div class="form-check">
                     <input data-_id="{{this._id}}" class="form-check-input" type="checkbox" value="" id="savedCheck"
                         checked="checked">
                     <label class="form-check-label" for="savedCheck">Saved</label>
-                    <button data-_id="{{this._id}}" class="btn-sm btn-success comment float-right" data-toggle="modal"
-                        data-target="#commentModal">Add Note</button>
-                    <button class="btn-sm btn-primary ml-2" type="button" data-toggle="collapse"
+                    <button class="btn-sm btn-primary ml-2 view-note-btn" type="button" data-toggle="collapse"
                         data-target="#cmnt{{this._id}}" aria-expanded="false" aria-controls="cmnt{{this._id}}">
-                        View Notes
+                        See Notes
                     </button>
+                    <button data-_id="{{this._id}}" class="btn-sm btn-success comment" data-toggle="modal"
+                        data-target="#commentModal">Add Note</button>
                 </div>
 
                 <div class="collapse" id="cmnt{{this._id}}">
-                    <div class="card card-body">
-                        <p class="align-center">{{this.note}}<button type="button"
-                                class="btn-sm btn-danger float-right">Delete</button></p>
+                    <div class="card card-body text-white bg-dark mt-3">
+                        <p class="align-center">{{this.note}}<button data-_id="{{this._id}}"type="button"
+                                class="btn-sm btn-danger float-right delete-comment-btn">Delete</button></p>
                     </div>
                 </div>
             </div>
