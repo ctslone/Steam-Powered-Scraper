@@ -182,7 +182,7 @@ app.get("/upcoming", function(req, res) {
 
 app.get("/clear", function(req, res) {
     db.Games.deleteMany({}).then(function(s) {
-        res.send("deleted all articles")
+        res.redirect("/")
       })
 });
 
