@@ -33,7 +33,7 @@ $(document).ready(function() {
     function updateSaveFalse (thisId) {
         var updateSave = {
             saved: false
-        }
+        };
 
         $.ajax({
             method: "PUT",
@@ -47,12 +47,13 @@ $(document).ready(function() {
     $(".comment").on("click", function() {
         console.log("comment btn");
         savedID = $(this).attr("data-_id");
-        console.log(savedID)
-    })
+        console.log("saved ID " + savedID)
+        getNotes(savedID);
+    });
 
     $(".save-btn").on("click", function() {
         // use the savedID global variable to make an ajax call to post a comment to the game with the id of the savedID
-        console.log("saved btn log for ID" + savedID)
+        console.log("saved btn log for ID" + savedID);
         var note = {
             note: $("#commentInput").val()
         };
@@ -62,9 +63,19 @@ $(document).ready(function() {
             url: "/addComment/" + savedID,
             data: note,
         }).then(function(data) {
-            // console.log(data)
+            location.reload()
             console.log("note added to DB")
-        })
-    })
+        });
+    });
+
+    // function for grabbing all saved notes
+    function getNotes(savedGameID) {
+        $.ajax({
+            url: "/getNote/" + savedGameID,
+            type: "GET"
+          }).then(function(data) {
+              console.log(data)
+          })
+    }
 })
 

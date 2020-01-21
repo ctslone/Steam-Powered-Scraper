@@ -35,7 +35,9 @@ mongoose.connect("mongodb://localhost/steamdb", { useNewUrlParser: true, useUnif
 
 // root route
 app.get("/", function (req, res) {
-    res.render("index")
+    db.Games.find({type: "top"}).then(function(showAllTop) {
+        res.render("index", {Games: showAllTop})
+      })
 })
 
 // new free games
@@ -147,10 +149,11 @@ app.get("/scrape", function (req, res) {
                 console.log(err)
             });
         });
-
-        res.send("scraped")
-
-    });    
+    }).then(function() {
+        res.redirect("/top");
+    }); 
+    
+    
 })
 
 app.get("/top", function(req, res) {
@@ -187,7 +190,7 @@ app.get("/clear", function(req, res) {
 app.get("/saved", function(req, res) {
     db.Games.find({saved: true}).then(function(showAllSaved) {
         res.render("saved", {Games: showAllSaved})
-        // console.log(showAllSaved)
+        console.log("saved games: " + showAllSaved)
       })
 });
 // updating saved value to true
@@ -209,6 +212,11 @@ app.post("/addComment/:id", function(req, res) {
     db.Games.updateOne({_id: req.params.id}, {$set: {note: req.body.note}}).then(function(){
         res.render("saved")
     })
+});
+// get saved notes
+app.get("/getNote/:id", function(req, res) {
+    console.log(req.params.id)
+    return db.Games.findOne({_id: req.params.id})
 })
 
 // Listen on port 3000

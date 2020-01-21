@@ -1,5 +1,14 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
+        {{#unless Games}}
+        <div class="jumbotron noSavedAlert">
+            <h1 class="display-4">Uh, oh!</h1>
+            <p class="lead">There seems to be a bit of a problem...You haven't scraped any games yet!</p>
+            <hr class="my-4">
+            <p>Please scrape Steam, save what you like and check back later.</p>
+            <a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape All Games</a>
+        </div>
+        {{/unless}}
         {{#each Games}}
         <div data-_id="{{this._id}}" class="card col-lg-3 col-md-4 col-sm-12 ml-2 mb-2 mt-2">
             <img src="{{this.photo}}" class="card-img-top" alt="...">
