@@ -31,7 +31,8 @@ app.set("view engine", "handlebars");
 
 // connect to mongoDB using mongoose
 // db name is steamdb
-mongoose.connect("mongodb://localhost/steamdb", { useNewUrlParser: true, useUnifiedTopology: true })
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost\steamdb"
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // root route
 app.get("/", function (req, res) {
