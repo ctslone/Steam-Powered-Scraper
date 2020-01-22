@@ -3,16 +3,21 @@ $(document).ready(function() {
     console.log("ready");
     var savedID;
 
+    //  statement for on load if a card is saved
+
     $("input#savedCheck").on("click", function() {
         console.log($(this).data("_id"));
         thisId = $(this).data("_id");
+        // currentCard = 
 
         console.log($(this).is(":checked"))
         if ($(this).is(":checked")) {
-            updateSaveTrue(thisId)
+            updateSaveTrue(thisId);
+            $(this).closest(".card").addClass("saved-glow");
         }
         else {
-            updateSaveFalse(thisId)
+            updateSaveFalse(thisId);
+            $(this).closest(".card").removeClass("saved-glow");
         }  
     })
 

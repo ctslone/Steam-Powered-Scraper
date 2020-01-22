@@ -14,6 +14,7 @@ body {
     font-family: 'Press Start 2P', cursive;
     font-size: 8px;
     word-spacing: -5px;
+    margin-top: 3px;
 }
 
 /* .main-nav {
@@ -63,3 +64,25 @@ input[type="checkbox"]:focus:after {
     position: absolute;
     bottom: -10;
 } */
+
+.card {
+    border-radius: 15px; 
+    box-shadow:
+    0 0 5px #fff,
+    0 0 10px blue,
+    0 0 20px blue,
+    0 0 30px blue;
+}
+
+.game-img {
+    margin-top: 15px;
+    border-radius: 15px;
+}
+
+.saved-glow {
+    box-shadow:
+    0 0 5px #fff,
+    0 0 10px red,
+    0 0 20px red,
+    0 0 30px red;
+}
