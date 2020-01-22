@@ -201,6 +201,7 @@ app.put("/save/:id", function(req, res) {
     })
 });
 // removing saved value of true
+// remove from saved back and show that it was removed, how?
 app.put("/unsave/:id", function(req, res) {
     db.Games.updateMany({_id: req.params.id}, {$set: {saved: false}}, {multi: true}).then(function(){
         res.render("index")
