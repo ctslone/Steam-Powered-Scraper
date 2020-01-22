@@ -18,7 +18,7 @@ var db = require("./models")
 // var collections = ["steamData"];
 
 // server
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 
 // setting up static folder for public html and css AND parsing req body as JSON
 app.use(express.static("public"));
@@ -31,7 +31,7 @@ app.set("view engine", "handlebars");
 
 // connect to mongoDB using mongoose
 // db name is steamdb
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost\steamdb"
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/steamdb"
 mongoose.connect(MONGODB_URI)
 
 // root route
