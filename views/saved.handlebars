@@ -10,6 +10,37 @@
         </div>
         {{/unless}}
         {{#each Games}}
+        {{#if saved}}
+        <div data-_id="{{this._id}}"
+            class="card text-white bg-dark col-lg-3 col-md-4 col-sm-12 ml-2 mb-2 mt-2 saved-glow">
+            <img src="{{this.photo}}" class="card-img-top game-img" alt="...">
+            <div class="card-body">
+                <h5 class="card-title"><a class="game-link" href="{{this.link}}">{{this.title}}</a></h5>
+                <p class="card-text">{{this.tags}}</p>
+                {{!-- <a data-_id="{{this._id}}" class="btn btn-primary save">Save!</a> --}}
+                <div class="form-check">
+                    <input data-_id="{{this._id}}" class="form-check-input" type="checkbox" value="" id="savedCheck"
+                        checked="checked">
+                    <label class="form-check-label" for="savedCheck">Saved</label>
+                    <button class="btn-sm btn-primary ml-2 view-note-btn" type="button" data-toggle="collapse"
+                        data-target="#cmnt{{this._id}}" aria-expanded="false" aria-controls="cmnt{{this._id}}">
+                        See Notes
+                    </button>
+                    <button data-_id="{{this._id}}" class="btn-sm btn-success comment" data-toggle="modal"
+                        data-target="#commentModal">Add Note</button>
+                </div>
+
+                <div class="collapse" id="cmnt{{this._id}}">
+                    <div class="card card-body text-white bg-dark mt-3">
+                        <p class="align-center">{{this.note}}<button data-_id="{{this._id}}" type="button"
+                                class="btn-sm btn-danger float-right delete-comment-btn">Delete</button></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/saved}}
+
+        {{#unless saved}}
         <div data-_id="{{this._id}}" class="card text-white bg-dark col-lg-3 col-md-4 col-sm-12 ml-2 mb-2 mt-2">
             <img src="{{this.photo}}" class="card-img-top game-img" alt="...">
             <div class="card-body">
@@ -30,12 +61,14 @@
 
                 <div class="collapse" id="cmnt{{this._id}}">
                     <div class="card card-body text-white bg-dark mt-3">
-                        <p class="align-center">{{this.note}}<button data-_id="{{this._id}}"type="button"
+                        <p class="align-center">{{this.note}}<button data-_id="{{this._id}}" type="button"
                                 class="btn-sm btn-danger float-right delete-comment-btn">Delete</button></p>
                     </div>
                 </div>
             </div>
         </div>
+        {{/unless}}
+
         {{/each}}
     </div>
 </div>
