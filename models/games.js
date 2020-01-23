@@ -24,7 +24,7 @@ var GameSchema = new Schema({
         required: true
     },
     note: {
-        type: String,
+        type: Array,
     },
     saved: {
         type: Boolean,

@@ -18,6 +18,7 @@ $(document).ready(function() {
         else {
             updateSaveFalse(thisId);
             $(this).closest(".card").removeClass("saved-glow");
+            location.reload()
         }  
     })
 
@@ -56,11 +57,16 @@ $(document).ready(function() {
         getNotes(savedID);
     });
 
-    $(".save-btn").on("click", function() {
+    $(document).on("click", ".save-btn", function() {
         // use the savedID global variable to make an ajax call to post a comment to the game with the id of the savedID
         console.log("saved btn log for ID" + savedID);
+        // var noteArray = [];
+        // target the note container id and then find the child with the class of note, push the child to the note array and then the note key in the note object will become note array
+        // var noteDiv = $(this).closest("h5.modal-title").text();
+        // console.log(noteDiv)
+        // handlebars will render a new note for each note in the note array inside the notes card
         var note = {
-            note: $("#commentInput").val()
+            note: [$("#commentInput").val()]
         };
 
         $.ajax({
@@ -72,6 +78,24 @@ $(document).ready(function() {
             console.log("note added to DB")
         });
     });
+    // remove note
+    $(document).on("click", ".delete-comment-btn", function() {
+        savedID = $(this).closest("div.notes").attr("data-_id");
+        noteToDelete = $(this).closest("p.note").text();
+        console.log("del ID " + savedID);
+        console.log("note text " + noteToDelete)
+        var note = {
+            note: noteToDelete
+        }
+        $.ajax({
+            method: "PUT",
+            url: "/deleteComment/" + savedID,
+            data: note
+        }).then(function(data) {
+            location.reload()
+            console.log("deleted note in DB")
+        });
+    })
 
     // function for grabbing all saved notes
     function getNotes(savedGameID) {

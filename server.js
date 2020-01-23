@@ -59,7 +59,7 @@ app.get("/scrape", function (req, res) {
             newGames.tags = $(element).find("span.top_tag").text();
             newGames.type = "new";
             newGames.saved = false;
-            newGames.note = ""
+            newGames.note;
             // insert into games array
             // newGames.push({
             //     title: title,
@@ -84,7 +84,7 @@ app.get("/scrape", function (req, res) {
             topGames.tags = $(element).find("span.top_tag").text();
             topGames.type = "top";
             topGames.saved = false;
-            topGames.note = ""
+            topGames.note;
             // insert into test array
             // topGames.push({
             //     title: title,
@@ -109,7 +109,7 @@ app.get("/scrape", function (req, res) {
             currentGames.tags = $(element).find("span.top_tag").text();
             currentGames.type = "current";
             currentGames.saved = false;
-            currentGames.note = ""
+            currentGames.note;
             // insert into test array
             // currentGames.push({
             //     title: title,
@@ -134,7 +134,7 @@ app.get("/scrape", function (req, res) {
             upcomingGames.tags = $(element).find("span.top_tag").text();
             upcomingGames.type = "upcoming";
             upcomingGames.saved = false;
-            upcomingGames.note = ""
+            upcomingGames.note;
             // insert into test array
             // upcomingGames.push({
             //     title: title,
@@ -191,7 +191,7 @@ app.get("/clear", function(req, res) {
 app.get("/saved", function(req, res) {
     db.Games.find({saved: true}).then(function(showAllSaved) {
         res.render("saved", {Games: showAllSaved})
-        console.log("saved games: " + showAllSaved)
+        // console.log("saved games: " + showAllSaved)
       })
 });
 // updating saved value to true
@@ -211,7 +211,7 @@ app.put("/unsave/:id", function(req, res) {
 app.post("/addComment/:id", function(req, res) {
     // console.log("Req ID: " + req.params.id);
     // console.log("body " + req.body.note);
-    db.Games.updateOne({_id: req.params.id}, {$set: {note: req.body.note}}).then(function(){
+    db.Games.updateOne({_id: req.params.id}, {$push: {note: req.body.note}}).then(function(){
         res.render("saved")
     })
 });
@@ -219,6 +219,13 @@ app.post("/addComment/:id", function(req, res) {
 app.get("/getNote/:id", function(req, res) {
     console.log(req.params.id)
     return db.Games.findOne({_id: req.params.id})
+})
+// delete note
+app.put("/deleteComment/:id", function(req, res) {
+    console.log("Req ID: " + req.params.id)
+    db.Games.updateOne({_id: req.params.id}, {$pull: {note: req.body.note}}).then(function() {
+        res.render("saved")
+    })
 })
 
 // Listen on port 3000
