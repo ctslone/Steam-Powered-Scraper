@@ -53,8 +53,8 @@
                 <div class="collapse" id="cmnt{{this._id}}">
                     <div data-_id="{{this._id}}" class="card card-body text-white bg-dark mt-3 notes">
                         {{#each note}}
-                        <p class="align-center note">{{this}}<button type="button"
-                                class="btn-sm btn-danger float-right delete-comment-btn"></button></p>
+                        <p data-id="{{this}}" class="align-center note">{{this}}<button type="button"
+                                class="btn-sm btn-danger float-right delete-comment-btn">Delete</button></p>
                         {{/each}}
                     </div>
                 </div>

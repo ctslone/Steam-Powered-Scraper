@@ -81,7 +81,7 @@ $(document).ready(function() {
     // remove note
     $(document).on("click", ".delete-comment-btn", function() {
         savedID = $(this).closest("div.notes").attr("data-_id");
-        noteToDelete = $(this).closest("p.note").text();
+        noteToDelete = $(this).closest("p.note").attr("data-id");
         console.log("del ID " + savedID);
         console.log("note text " + noteToDelete)
         var note = {
