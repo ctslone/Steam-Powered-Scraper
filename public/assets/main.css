@@ -17,10 +17,6 @@ body {
     margin-top: 3px;
 }
 
-/* .main-nav {
-    background-color: rgba(0, 128, 0, 0.356) !important;
-} */
-
 .jumbo-image {
     background-image: url(./keyboard.jpg);
     background-position: center;
@@ -59,11 +55,6 @@ input[type="checkbox"]:checked:after {
 input[type="checkbox"]:focus:after {
     border-color: red;
 }
-
-/* .credit {
-    position: absolute;
-    bottom: -10;
-} */
 
 .card {
     border-radius: 15px; 

@@ -3,12 +3,10 @@ $(document).ready(function() {
     console.log("ready");
     var savedID;
 
-    //  statement for on load if a card is saved
-
+    //  statement for on load if a card is saved and for checking the saved box and running the update saved value functions
     $("input#savedCheck").on("click", function() {
         console.log($(this).data("_id"));
         thisId = $(this).data("_id");
-        // currentCard = 
 
         console.log($(this).is(":checked"))
         if ($(this).is(":checked")) {
@@ -21,7 +19,7 @@ $(document).ready(function() {
             location.reload()
         }  
     })
-
+    // updates the select game's saved value to true
     function updateSaveTrue (thisId) {
         var updateSave = {
             saved: true
@@ -35,10 +33,11 @@ $(document).ready(function() {
             console.log("ajax save")
         })
     }
-
+    // updates the game's saved value to false
     function updateSaveFalse (thisId) {
         var updateSave = {
-            saved: false
+            saved: false,
+            note: []
         };
 
         $.ajax({
@@ -49,22 +48,16 @@ $(document).ready(function() {
             console.log("ajax remove save")
         })
     }
-
+    // saving the unique id to the global varibale to be used for comments
     $(".comment").on("click", function() {
         console.log("comment btn");
         savedID = $(this).attr("data-_id");
         console.log("saved ID " + savedID)
         getNotes(savedID);
     });
-
+    // post ajax request to the comment route. each comment is added to the note array of the associated comment
     $(document).on("click", ".save-btn", function() {
-        // use the savedID global variable to make an ajax call to post a comment to the game with the id of the savedID
         console.log("saved btn log for ID" + savedID);
-        // var noteArray = [];
-        // target the note container id and then find the child with the class of note, push the child to the note array and then the note key in the note object will become note array
-        // var noteDiv = $(this).closest("h5.modal-title").text();
-        // console.log(noteDiv)
-        // handlebars will render a new note for each note in the note array inside the notes card
         var note = {
             note: [$("#commentInput").val()]
         };
@@ -78,7 +71,7 @@ $(document).ready(function() {
             console.log("note added to DB")
         });
     });
-    // remove note
+    // remove note by grabbing the games unique id and the data id of the note (the note text) and doing a put request to the delete comment route
     $(document).on("click", ".delete-comment-btn", function() {
         savedID = $(this).closest("div.notes").attr("data-_id");
         noteToDelete = $(this).closest("p.note").attr("data-id");

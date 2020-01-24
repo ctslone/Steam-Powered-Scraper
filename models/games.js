@@ -33,11 +33,6 @@ var GameSchema = new Schema({
 
 });
 
-// GameSchema.methods.updateSaved = function() {
-//     this.saved = true;
-//     return this.saved;
-// }
-
 var Game = mongoose.model("Game", GameSchema);
 
 module.exports = Game;

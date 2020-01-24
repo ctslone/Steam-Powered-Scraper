@@ -13,10 +13,6 @@ var app = express();
 // models
 var db = require("./models")
 
-// Database configuration
-// var databaseUrl = "steamdb";
-// var collections = ["steamData"];
-
 // server
 var PORT = process.env.PORT || 3000;
 
@@ -53,6 +49,7 @@ app.get("/scrape", function (req, res) {
         // grabbing all new games
         $("div#NewReleasesRows").children("a.tab_item").each(function (i, element) {
 
+            // constructing each game object
             newGames.title = $(element).find("div.tab_item_name").text();
             newGames.link = $(element).attr("href");
             newGames.photo = $(element).find("img.tab_item_cap_img").attr("src");
@@ -60,17 +57,8 @@ app.get("/scrape", function (req, res) {
             newGames.type = "new";
             newGames.saved = false;
             newGames.note;
-            // insert into games array
-            // newGames.push({
-            //     title: title,
-            //     link: link,
-            //     photo: photo,
-            //     tags: tags,
-            //     type: "new"
-            // });
-            // create a new entry into the db
+            // creating a new entry for each game type
             db.Games.create(newGames).then(function(addNewGames) {
-                // console.log(addNewGames)
             }).catch(function(err) {
                 console.log(err)
             })
@@ -85,17 +73,8 @@ app.get("/scrape", function (req, res) {
             topGames.type = "top";
             topGames.saved = false;
             topGames.note;
-            // insert into test array
-            // topGames.push({
-            //     title: title,
-            //     link: link,
-            //     photo: photo,
-            //     tags: tags,
-            //     type: "top"
-            // });
 
             db.Games.create(topGames).then(function(addTopGames) {
-                // console.log(addTopGames)
             }).catch(function(err) {
                 console.log(err)
             })
@@ -110,17 +89,8 @@ app.get("/scrape", function (req, res) {
             currentGames.type = "current";
             currentGames.saved = false;
             currentGames.note;
-            // insert into test array
-            // currentGames.push({
-            //     title: title,
-            //     link: link,
-            //     photo: photo,
-            //     tags: tags,
-            //     type: "current"
-            // });
 
             db.Games.create(currentGames).then(function(addCurrentGames) {
-                // console.log(addCurrentGames)
             }).catch(function(err) {
                 console.log(err)
             })
@@ -135,52 +105,42 @@ app.get("/scrape", function (req, res) {
             upcomingGames.type = "upcoming";
             upcomingGames.saved = false;
             upcomingGames.note;
-            // insert into test array
-            // upcomingGames.push({
-            //     title: title,
-            //     link: link,
-            //     photo: photo,
-            //     tags: tags,
-            //     type: "upcoming"
-            // });
 
             db.Games.create(upcomingGames).then(function(addUpcomingGames) {
-                // console.log(addUpcomingGames)
             }).catch(function(err) {
                 console.log(err)
             });
         });
+        // show the top games as default
     }).then(function() {
         res.redirect("/top");
-    }); 
-    
-    
+    });  
 })
-
+// route for getting and showing all top games
 app.get("/top", function(req, res) {
     db.Games.find({type: "top"}).then(function(showAllTop) {
         res.render("index", {Games: showAllTop})
       })
 });
-
+// route for getting and showing all new games
 app.get("/new", function(req, res) {
     db.Games.find({type: "new"}).then(function(showAllNew) {
         res.render("index", {Games: showAllNew})
       })
 });
-
+// route for getting and showing all current games
 app.get("/current", function(req, res) {
     db.Games.find({type: "current"}).then(function(showAllCurrent) {
         res.render("index", {Games: showAllCurrent})
       })
 });
-
+// route for getting and showing all upcoming games
 app.get("/upcoming", function(req, res) {
     db.Games.find({type: "upcoming"}).then(function(showAllUpcoming) {
         res.render("index", {Games: showAllUpcoming})
       })
 });
-
+// route for clearing the games collection
 app.get("/clear", function(req, res) {
     db.Games.deleteMany({}).then(function(s) {
         res.redirect("/")
@@ -191,10 +151,9 @@ app.get("/clear", function(req, res) {
 app.get("/saved", function(req, res) {
     db.Games.find({saved: true}).then(function(showAllSaved) {
         res.render("saved", {Games: showAllSaved})
-        // console.log("saved games: " + showAllSaved)
       })
 });
-// updating saved value to true
+// updating saved value to true and removing all notes
 app.put("/save/:id", function(req, res) {
     db.Games.updateMany({_id: req.params.id}, {$set: {saved: true}}, {multi: true}).then(function(){
         res.render("index")
@@ -203,26 +162,22 @@ app.put("/save/:id", function(req, res) {
 // removing saved value of true
 // remove from saved back and show that it was removed, how?
 app.put("/unsave/:id", function(req, res) {
-    db.Games.updateMany({_id: req.params.id}, {$set: {saved: false}}, {multi: true}).then(function(){
+    db.Games.updateMany({_id: req.params.id}, {$set: {saved: false, note: []}}, {multi: true}).then(function(){
         res.render("index")
     })
 });
 // add comment route
 app.post("/addComment/:id", function(req, res) {
-    // console.log("Req ID: " + req.params.id);
-    // console.log("body " + req.body.note);
     db.Games.updateOne({_id: req.params.id}, {$push: {note: req.body.note}}).then(function(){
         res.render("saved")
     })
 });
 // get saved notes
 app.get("/getNote/:id", function(req, res) {
-    console.log(req.params.id)
     return db.Games.findOne({_id: req.params.id})
 })
 // delete note
 app.put("/deleteComment/:id", function(req, res) {
-    console.log("Req ID: " + req.params.id)
     db.Games.updateOne({_id: req.params.id}, {$pull: {note: req.body.note}}).then(function() {
         res.render("saved")
     })
