@@ -2,6 +2,8 @@
 
 Are you trying to find the next best free to play PC game? Look no further than the Steam Powered Scraper, a full stack web application that scrapes the iconic gaming website Steam, utilizes Mongo DB, Express and Node to present a streamlined way to preview, save and comment on a variety of free to play games!
 
+![](public/assets/main.png)
+
 ## Getting Started
 
 Want to try it out?
@@ -11,6 +13,8 @@ Just follow this link: [Steam Powered Scraper](https://steam-powered-scraper.her
 * You can filter the games by "top", "new", "popular" and "upcoming".
 * You can click on any game title to check out or download the game from Steam.
 * Favorite and comment on games you like!
+
+![](public/assets/saved.png)
 
 ## Mobile Friendly
 
@@ -40,4 +44,7 @@ A few challenges that I faced when creating this application were:
 
 ## Authors
 
-* Charlie Slone - [GitHub](https://github.com/ctslone) - [LinkedIn](https://www.linkedin.com/in/charlie-slone-704311a9/)
+* Charlie Slone
+    * [GitHub](https://github.com/ctslone)
+    * [LinkedIn](https://www.linkedin.com/in/charlie-slone-704311a9/)
+    * [Portfolio](https://ctslone.github.io/Updated-Portfolio/)
